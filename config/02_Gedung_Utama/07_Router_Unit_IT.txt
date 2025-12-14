@@ -1,0 +1,43 @@
+===========================================================================
+KONFIGURASI ROUTER UNIT: IT PENDIDIKAN
+===========================================================================
+Hostname: R_IT
+Fungsi: Unit Server (6 Host Server)
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+interface FastEthernet0/0
+ ip address 192.168.5.6 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet1/0
+ ip address 192.168.4.225 255.255.255.240
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.5.5
+
+DHCP CONFIGURATION (SERVER EXCLUSION)
+---------------------------------------------------------------------------
+! Unit IT Pendidikan isinya 6 Server.
+! Kita exclude 6 IP pertama (.225 gateway, .226-.231 untuk server)
+! Sisanya boleh DHCP (meskipun server jarang pakai DHCP).
+ip dhcp excluded-address 192.168.4.225 192.168.4.231
+
+ip dhcp pool LAN_IT
+ network 192.168.4.224 255.255.255.240
+ default-router 192.168.4.225
+ dns-server 8.8.8.8
+ exit
+
+PANDUAN SETTING SERVER STATIC:
+---------------------------------------------------------------------------
+[SERVER 1] IP: 192.168.4.226 /28 | GW: 192.168.4.225
+[SERVER 2] IP: 192.168.4.227 /28 | GW: 192.168.4.225
+[SERVER 3] IP: 192.168.4.228 /28 | GW: 192.168.4.225
+[SERVER 4] IP: 192.168.4.229 /28 | GW: 192.168.4.225
+[SERVER 5] IP: 192.168.4.230 /28 | GW: 192.168.4.225
+[SERVER 6] IP: 192.168.4.231 /28 | GW: 192.168.4.225

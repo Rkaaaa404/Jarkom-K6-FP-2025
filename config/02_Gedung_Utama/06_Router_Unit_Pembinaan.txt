@@ -1,0 +1,28 @@
+===========================================================================
+KONFIGURASI ROUTER UNIT: PEMBINAAN & PENGAWASAN
+===========================================================================
+Hostname: R_Pembinaan
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+interface FastEthernet0/0
+ ip address 192.168.5.2 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet1/0
+ ip address 192.168.4.193 255.255.255.224
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.5.1
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool LAN_PEMBINAAN
+ network 192.168.4.192 255.255.255.224
+ default-router 192.168.4.193
+ dns-server 8.8.8.8
+ exit

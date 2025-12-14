@@ -1,0 +1,28 @@
+===========================================================================
+KONFIGURASI ROUTER UNIT: SDM PENDIDIKAN
+===========================================================================
+Hostname: R_SDM
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+interface FastEthernet0/0
+ ip address 192.168.4.250 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet1/0
+ ip address 192.168.4.1 255.255.255.128
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.4.249
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool LAN_SDM
+ network 192.168.4.0 255.255.255.128
+ default-router 192.168.4.1
+ dns-server 8.8.8.8
+ exit

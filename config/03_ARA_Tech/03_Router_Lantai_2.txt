@@ -1,0 +1,55 @@
+===========================================================================
+KONFIGURASI ROUTER LANTAI 2 (MARKETING, SALES, HR)
+===========================================================================
+Hostname: R_Lantai_2
+Lokasi: Lantai 2 Gedung ARA Tech
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+! Uplink ke Router ARA Main
+interface FastEthernet0/0
+ ip address 192.168.5.26 255.255.255.252
+ no shutdown
+ exit
+
+! LAN Marketing (A16)
+interface FastEthernet1/0
+ ip address 192.168.8.129 255.255.255.192
+ no shutdown
+ exit
+
+! LAN Sales (A17)
+interface FastEthernet2/0
+ ip address 192.168.8.193 255.255.255.224
+ no shutdown
+ exit
+
+! LAN HR (A18)
+interface FastEthernet3/0
+ ip address 192.168.8.225 255.255.255.224
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.5.25
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool L2_MARKETING
+ network 192.168.8.128 255.255.255.192
+ default-router 192.168.8.129
+ dns-server 8.8.8.8
+ exit
+
+ip dhcp pool L2_SALES
+ network 192.168.8.192 255.255.255.224
+ default-router 192.168.8.193
+ dns-server 8.8.8.8
+ exit
+
+ip dhcp pool L2_HR
+ network 192.168.8.224 255.255.255.224
+ default-router 192.168.8.225
+ dns-server 8.8.8.8
+ exit

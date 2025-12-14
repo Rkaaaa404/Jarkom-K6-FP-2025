@@ -1,0 +1,28 @@
+===========================================================================
+KONFIGURASI ROUTER UNIT: SARANA PRASARANA
+===========================================================================
+Hostname: R_Sarpras
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+interface FastEthernet0/0
+ ip address 192.168.4.254 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet1/0
+ ip address 192.168.4.129 255.255.255.192
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.4.253
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool LAN_SARPRAS
+ network 192.168.4.128 255.255.255.192
+ default-router 192.168.4.129
+ dns-server 8.8.8.8
+ exit

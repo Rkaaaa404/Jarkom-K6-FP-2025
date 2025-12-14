@@ -1,0 +1,72 @@
+===========================================================================
+KONFIGURASI ROUTER GEDUNG ARA TECH (MAIN)
+===========================================================================
+Hostname: Router_ARA_Tech
+Lokasi: Ruang Server ARA Tech (Lantai 1)
+Fungsi: Gateway Gedung, Distribusi ke 5 Lantai, OSPF ke Core.
+
+INTERFACE CONFIGURATION (UPLINK)
+---------------------------------------------------------------------------
+! Link ke Core Router (192.168.5.12/30)
+interface Fa0/0
+ description Uplink ke Core_Router
+ ip address 192.168.5.14 255.255.255.252
+ no shutdown
+ exit
+
+INTERFACE CONFIGURATION (DOWNLINK KE LANTAI)
+---------------------------------------------------------------------------
+! Link ke R-Lantai-1 (5.20/30)
+interface FastEthernet0/1
+ description Link ke Router Lantai 1
+ ip address 192.168.5.21 255.255.255.252
+ no shutdown
+ exit
+
+! Link ke R-Lantai-2 (5.24/30)
+interface Ethernet0/1/0
+ description Link ke Router Lantai 2
+ ip address 192.168.5.25 255.255.255.252
+ no shutdown
+ exit
+
+! Link ke R-Lantai-3 (5.28/30)
+interface Ethernet0/2/0
+ description Link ke Router Lantai 3
+ ip address 192.168.5.29 255.255.255.252
+ no shutdown
+ exit
+
+! Link ke R-Lantai-4 (5.32/30)
+interface Ethernet0/3/0
+ description Link ke Router Lantai 4
+ ip address 192.168.5.33 255.255.255.252
+ no shutdown
+ exit
+
+! Link ke R-Lantai-5 (5.36/30)
+interface Ethernet1/0
+ description Link ke Router Lantai 5
+ ip address 192.168.5.37 255.255.255.252
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION (HYBRID)
+---------------------------------------------------------------------------
+! 1. OSPF ke Arah Core
+router ospf 1
+ network 192.168.5.12 0.0.0.3 area 0
+ redistribute static subnets
+ exit
+
+! 2. Static Route ke Lantai (Summary Routes)
+! Mengarahkan paket ke masing-masing router lantai
+ip route 192.168.8.0 255.255.255.128 192.168.5.22   ! Lt 1
+ip route 192.168.8.128 255.255.255.128 192.168.5.26 ! Lt 2
+ip route 192.168.9.0 255.255.255.128 192.168.5.30   ! Lt 3 (Expanded /25->/24 logic applied)
+ip route 192.168.9.128 255.255.255.128 192.168.5.34 ! Lt 4
+ip route 192.168.10.0 255.255.255.128 192.168.5.38  ! Lt 5
+
+! *Note: Untuk routing static lantai, pastikan sesuai dengan tabel routing
+! yang ada di router lantai masing-masing.
+

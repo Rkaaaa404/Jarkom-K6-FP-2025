@@ -1,0 +1,30 @@
+===========================================================================
+KONFIGURASI ROUTER UNIT: LAYANAN OPERASIONAL
+===========================================================================
+Hostname: R_LayananOps
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+! Interface Uptream (Ke Router Gedung)
+interface FastEthernet0/0
+ ip address 192.168.4.242 255.255.255.252
+ no shutdown
+ exit
+
+! Interface Downstream (Gateway LAN)
+interface FastEthernet1/0
+ ip address 192.168.0.1 255.255.254.0
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.4.241
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool LAN_OPS
+ network 192.168.0.0 255.255.254.0
+ default-router 192.168.0.1
+ dns-server 8.8.8.8
+ exit

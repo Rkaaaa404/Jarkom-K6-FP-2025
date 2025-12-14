@@ -1,0 +1,81 @@
+===========================================================================
+KONFIGURASI ROUTER LANTAI 1 (IT, SERVER, CYBER)
+===========================================================================
+Hostname: R_Lantai_1
+Lokasi: Lantai 1 Gedung ARA Tech
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+! Uplink ke Router ARA Main
+interface FastEthernet0/0
+ ip address 192.168.5.22 255.255.255.252
+ no shutdown
+ exit
+
+! LAN IT Support (A13)
+interface Ethernet0/1/0
+ ip address 192.168.8.1 255.255.255.192
+ no shutdown
+ exit
+
+! LAN Server & DC (A14)
+interface Ethernet0/2/0
+ ip address 192.168.8.65 255.255.255.224
+ no shutdown
+ exit
+
+! LAN Cybersecurity (A15)
+interface FastEthernet0/3/0
+ ip address 192.168.8.97 255.255.255.224
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION (DEFAULT ROUTE)
+---------------------------------------------------------------------------
+! Semua traffic keluar dilempar ke Router ARA Main
+ip route 0.0.0.0 0.0.0.0 192.168.5.21
+
+DHCP CONFIGURATION (SERVER EXCLUSIONS)
+---------------------------------------------------------------------------
+! 1. IT Support (User PC) - Standard
+! Exclude Gateway & beberapa IP cadangan
+ip dhcp excluded-address 192.168.8.1 192.168.8.5
+ip dhcp pool L1_ITSUPPORT
+ network 192.168.8.0 255.255.255.192
+ default-router 192.168.8.1
+ dns-server 8.8.8.8
+ exit
+
+! 2. Server & DC (15 SERVER HOST)
+! Total range host: .65 - .94 (30 Host)
+! Gateway: .65
+! Server Statik: 15 Server (.66 s.d .80)
+ip dhcp excluded-address 192.168.8.65 192.168.8.80
+ip dhcp pool L1_SERVER
+ network 192.168.8.64 255.255.255.224
+ default-router 192.168.8.65
+ dns-server 8.8.8.8
+ exit
+
+! 3. Cybersecurity (2 SERVER HOST + Staff)
+! Total range host: .97 - .126 (30 Host)
+! Gateway: .97
+! Server Statik: 2 Server (.98 s.d .99)
+ip dhcp excluded-address 192.168.8.97 192.168.8.99
+ip dhcp pool L1_CYBER
+ network 192.168.8.96 255.255.255.224
+ default-router 192.168.8.97
+ dns-server 8.8.8.8
+ exit
+
+PANDUAN SETTING SERVER STATIC:
+---------------------------------------------------------------------------
+[SERVER CLUSTER - Data Center]
+- Server 1: 192.168.8.66 /27 (GW: .65)
+- Server 2: 192.168.8.67 /27
+- ...
+- Server 15: 192.168.8.80 /27
+
+[SERVER CLUSTER - Cybersecurity]
+- Server 1: 192.168.8.98 /27 (GW: .97)
+- Server 2: 192.168.8.99 /27

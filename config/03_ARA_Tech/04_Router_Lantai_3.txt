@@ -1,0 +1,60 @@
+===========================================================================
+KONFIGURASI ROUTER LANTAI 3 (R&D, PEOPLE DEV)
+===========================================================================
+Hostname: R_Lantai_3
+Lokasi: Lantai 3 Gedung ARA Tech
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+! Uplink ke Router ARA Main
+interface FastEthernet0/0
+ ip address 192.168.5.30 255.255.255.252
+ no shutdown
+ exit
+
+! LAN R&D (A19)
+interface FastEthernet1/0
+ ip address 192.168.9.1 255.255.255.128
+ no shutdown
+ exit
+
+! LAN People Development (A20)
+interface FastEthernet2/0
+ ip address 192.168.9.129 255.255.255.224
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.5.29
+
+DHCP CONFIGURATION (SERVER EXCLUSION)
+---------------------------------------------------------------------------
+! 1. R&D (66 Host - Butuh 5 SERVER)
+! Range Host: .1 - .126
+! Gateway: .1
+! Server Statik: 5 Server (.2 s.d .6)
+ip dhcp excluded-address 192.168.9.1 192.168.9.6
+ip dhcp pool L3_RND
+ network 192.168.9.0 255.255.255.128
+ default-router 192.168.9.1
+ dns-server 8.8.8.8
+ exit
+
+! 2. People Development (Std 22 Host)
+! Exclude Gateway
+ip dhcp excluded-address 192.168.9.129 192.168.9.130
+ip dhcp pool L3_PEOPLEDEV
+ network 192.168.9.128 255.255.255.224
+ default-router 192.168.9.129
+ dns-server 8.8.8.8
+ exit
+
+PANDUAN SETTING SERVER STATIC R&D:
+---------------------------------------------------------------------------
+[SERVER CLUSTER - R&D]
+- Server 1: 192.168.9.2 /25 (GW: .1)
+- Server 2: 192.168.9.3 /25
+- Server 3: 192.168.9.4 /25
+- Server 4: 192.168.9.5 /25
+- Server 5: 192.168.9.6 /25

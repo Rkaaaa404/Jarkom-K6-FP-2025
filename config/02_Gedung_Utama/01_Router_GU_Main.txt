@@ -1,0 +1,75 @@
+===========================================================================
+KONFIGURASI ROUTER GEDUNG UTAMA (MAIN)
+===========================================================================
+Hostname: Router_Gedung_Utama
+Lokasi: Ruang Server Gedung Utama
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+! Link ke Unit-Unit Kiri (Link 4.x)
+interface FastEthernet1/0
+ description Link ke R-LayananOps
+ ip address 192.168.4.241 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet2/0
+ description Link ke R-Kurikulum
+ ip address 192.168.4.245 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet3/0
+ description Link ke R-SDM
+ ip address 192.168.4.249 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet4/0
+ description Link ke R-Sarpras
+ ip address 192.168.4.253 255.255.255.252
+ no shutdown
+ exit
+
+! Link ke Unit-Unit Kanan (Link 5.x)
+interface FastEthernet5/0
+ description Link ke R-Pembinaan
+ ip address 192.168.5.1 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet6/0
+ description Link ke R-IT
+ ip address 192.168.5.5 255.255.255.252
+ no shutdown
+ exit
+
+! Link Uplink ke Core Router (Opsional - Jika ada Gigabit)
+! Asumsi menggunakan modul GigabitEthernet0/0
+interface GigabitEthernet0/0
+ description Uplink ke Core_Router
+ ip address 192.168.5.10 255.255.255.252
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION (HYBRID)
+---------------------------------------------------------------------------
+! 1. OSPF ke Core
+router ospf 1
+ network 192.168.5.8 0.0.0.3 area 0
+ redistribute static subnets
+ exit
+
+! 2. Static Route ke Unit (Next Hop = IP Uplink Router Unit)
+! A2: Layanan Ops via 4.242
+ip route 192.168.0.0 255.255.254.0 192.168.4.242
+! A4: Kurikulum via 4.246
+ip route 192.168.2.0 255.255.254.0 192.168.4.246
+! A6: SDM via 4.250
+ip route 192.168.4.0 255.255.255.128 192.168.4.250
+! A8: Sarpras via 4.254
+ip route 192.168.4.128 255.255.255.192 192.168.4.254
+! A10: Pembinaan via 5.2
+ip route 192.168.4.192 255.255.255.224 192.168.5.2
+! A12: IT via 5.6
+ip route 192.168.4.224 255.255.255.240 192.168.5.6

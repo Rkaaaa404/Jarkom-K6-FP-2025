@@ -1,0 +1,55 @@
+===========================================================================
+KONFIGURASI ROUTER LANTAI 5 (EXEC, GUEST, AUDITORIUM)
+===========================================================================
+Hostname: R_Lantai_5
+Lokasi: Lantai 5 Gedung ARA Tech
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+! Uplink ke Router ARA Main
+interface FastEthernet0/0
+ ip address 192.168.5.38 255.255.255.252
+ no shutdown
+ exit
+
+! LAN Executive Office (A24)
+interface FastEthernet1/0
+ ip address 192.168.11.1 255.255.255.224
+ no shutdown
+ exit
+
+! LAN Guest Lounge (A25)
+interface FastEthernet2/0
+ ip address 192.168.11.33 255.255.255.240
+ no shutdown
+ exit
+
+! LAN Auditorium (A26)
+interface FastEthernet3/0
+ ip address 192.168.11.49 255.255.255.224
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.5.37
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool L5_EXECUTIVE
+ network 192.168.11.0 255.255.255.224
+ default-router 192.168.11.1
+ dns-server 8.8.8.8
+ exit
+
+ip dhcp pool L5_GUEST
+ network 192.168.11.32 255.255.255.240
+ default-router 192.168.11.33
+ dns-server 8.8.8.8
+ exit
+
+ip dhcp pool L5_AUDITORIUM
+ network 192.168.11.48 255.255.255.224
+ default-router 192.168.11.49
+ dns-server 8.8.8.8
+ exit

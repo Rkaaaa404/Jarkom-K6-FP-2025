@@ -1,0 +1,28 @@
+===========================================================================
+KONFIGURASI ROUTER UNIT: KURIKULUM
+===========================================================================
+Hostname: R_Kurikulum
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+interface FastEthernet0/0
+ ip address 192.168.4.246 255.255.255.252
+ no shutdown
+ exit
+
+interface FastEthernet1/0
+ ip address 192.168.2.1 255.255.254.0
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.4.245
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool LAN_KURIKULUM
+ network 192.168.2.0 255.255.254.0
+ default-router 192.168.2.1
+ dns-server 8.8.8.8
+ exit

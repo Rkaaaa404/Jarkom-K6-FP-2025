@@ -1,0 +1,39 @@
+===========================================================================
+KONFIGURASI ROUTER KANTOR CABANG
+===========================================================================
+Hostname: Router_Cabang
+Lokasi: Kantor Cabang Regional
+Subnet: A27 (192.168.12.0/26)
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+! Uplink ke Core Router (Link 5.16/30)
+interface Fa0/0
+ description Link ke Core_Router
+ ip address 192.168.5.18 255.255.255.252
+ no shutdown
+ exit
+
+! LAN Kantor Cabang (40 Host)
+interface Fa0/1
+ description LAN Regional Office
+ ip address 192.168.12.1 255.255.255.192
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION (OSPF AREA 0)
+---------------------------------------------------------------------------
+router ospf 1
+ ! Advertise Link Backbone
+ network 192.168.5.16 0.0.0.3 area 0
+ ! Advertise LAN Lokal
+ network 192.168.12.0 0.0.0.63 area 0
+ exit
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool LAN_CABANG
+ network 192.168.12.0 255.255.255.192
+ default-router 192.168.12.1
+ dns-server 8.8.8.8
+ exit

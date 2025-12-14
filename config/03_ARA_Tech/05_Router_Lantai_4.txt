@@ -1,0 +1,55 @@
+===========================================================================
+KONFIGURASI ROUTER LANTAI 4 (CS, FINANCE, LEGAL)
+===========================================================================
+Hostname: R_Lantai_4
+Lokasi: Lantai 4 Gedung ARA Tech
+
+INTERFACE CONFIGURATION
+---------------------------------------------------------------------------
+! Uplink ke Router ARA Main
+interface FastEthernet0/0
+ ip address 192.168.5.34 255.255.255.252
+ no shutdown
+ exit
+
+! LAN Keuangan (A21)
+interface FastEthernet1/0
+ ip address 192.168.10.1 255.255.255.192
+ no shutdown
+ exit
+
+! LAN Legal (A22)
+interface FastEthernet2/0
+ ip address 192.168.10.65 255.255.255.224
+ no shutdown
+ exit
+
+! LAN Customer Service (A23)
+interface FastEthernet3/0
+ ip address 192.168.10.97 255.255.255.192
+ no shutdown
+ exit
+
+ROUTING CONFIGURATION
+---------------------------------------------------------------------------
+ip route 0.0.0.0 0.0.0.0 192.168.5.33
+
+DHCP CONFIGURATION
+---------------------------------------------------------------------------
+ip dhcp pool L4_FINANCE
+ network 192.168.10.0 255.255.255.192
+ default-router 192.168.10.1
+ dns-server 8.8.8.8
+ exit
+
+ip dhcp pool L4_LEGAL
+ network 192.168.10.64 255.255.255.224
+ default-router 192.168.10.65
+ dns-server 8.8.8.8
+ exit
+
+ip dhcp pool L4_CS
+ network 192.168.10.96 255.255.255.192
+ default-router 192.168.10.97
+ dns-server 8.8.8.8
+ exit
