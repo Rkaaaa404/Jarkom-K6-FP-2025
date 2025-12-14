@@ -16,7 +16,7 @@ Dilakukan dengan mengurutkan host dari yang terbesar ke terkecil, lalu membagi s
 ![VLSM Table](assets/vlsm_table.png)
 
 VLSM Tree:     
-[!VLSM Tree](assets/vlsm_tree.png)
+![VLSM Tree](assets/vlsm_tree.png)     
 
 ### B. Gedung ARA Tech (Teknik CIDR & Supernetting)
 Perhitungan CIDR: 
@@ -75,5 +75,6 @@ VERIFIKASI
 ===========================================================================
 show ip route
 show ip ospf neighbor
+
 
 ```
